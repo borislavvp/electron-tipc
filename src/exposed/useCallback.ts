@@ -1,18 +1,18 @@
 import {
   MainTIPCEventHandlerFunction,
   MainTIPCEventHandlerFunctionExtended
-} from "./internals/setupMainTIPC";
+} from "@/internals/setupMainTIPC";
 
 import {
   RendererTIPCEventHandlerFunction,
   RendererTIPCEventHandlerFunctionExtended
-} from "./internals/setupRendererTIPC";
+} from "@/internals/setupRendererTIPC";
 
 import {
   EventArgs_Type_Callback,
   Events,
   EventType
-} from "./internals/types/Eventer";
+} from "@/internals/types/Eventer";
 
 type TIPCUseCCallback = {
   <TEvents extends Events, TEventType extends EventType<TEvents>>(

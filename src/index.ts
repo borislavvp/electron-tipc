@@ -1,2 +1,2 @@
-export * from "./setupETIPCEventer";
-export * from "./setupETIPCEventCallback";
+export * from "./exposed/createEventer";
+export * from "./exposed/useCallback";
