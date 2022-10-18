@@ -147,7 +147,6 @@ export const setupRendererTIPC = <
   postMessage: (eventType, message, transfer) =>
     ipcRenderer.postMessage(eventType, message, transfer),
 
-  //TODO: TRY TO MAKE IT INFER TYPES ON THE HANDLE
   invoke: (...args) => ipcRenderer.invoke(...(args as [any])),
 
   off: (...args) => ipcRenderer.off(args[0], args[1]),
