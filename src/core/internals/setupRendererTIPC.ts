@@ -1,4 +1,5 @@
-import { ipcRenderer, type IpcRendererEvent } from "electron";
+import { ipcRenderer, type IpcRendererEvent, type IpcRenderer } from "electron";
+
 import type {
   Events,
   EventType,
@@ -6,7 +7,7 @@ import type {
   EventArgs_Type_Callback,
   EventArgs_Type_Event_Callback,
   EventArgs_Type_Payload
-} from "./types/Eventer";
+} from "./types";
 
 export type IpcRendererEventer<TEvents extends Events> = Omit<
   IpcRendererEvent,
@@ -15,23 +16,8 @@ export type IpcRendererEventer<TEvents extends Events> = Omit<
   sender: RendererTIPC<TEvents>;
 };
 
-export type RendererTIPCEventHandlerFunction<TEvents extends Events> = <
-  TEventType extends EventType<TEvents>
->(
-  ...args: EventArgs_Type_Callback<TEvents, TEventType>
-) => RendererTIPC<TEvents>;
-
-export type RendererTIPCEventHandlerFunctionExtended<TEvents extends Events> = <
-  TEventType extends EventType<TEvents>
->(
-  ...args: EventArgs_Type_Event_Callback<
-    TEvents,
-    TEventType,
-    IpcRendererEventer<TEvents>
-  >
-) => RendererTIPC<TEvents>;
-
-export interface RendererTIPC<TEvents extends Events> {
+export interface RendererTIPC<TEvents extends Events>
+  extends Partial<IpcRenderer> {
   send: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Payload<TEvents, TEventType>
   ) => void;
@@ -47,7 +33,7 @@ export interface RendererTIPC<TEvents extends Events> {
 
   sendToHost: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Payload<TEvents, TEventType>
-  ) => void;
+  ) => any;
 
   postMessage: <TEventType extends EventType<TEvents>>(
     eventType: TEventType,
@@ -61,25 +47,37 @@ export interface RendererTIPC<TEvents extends Events> {
     ...args: EventArgs_Type_Payload<TEvents, TEventType>
   ) => Promise<any>;
 
-  off: <TEventType extends EventType<TEvents>>(
+  off<TEventType extends EventType<TEvents>>(
+    eventType: TEventType
+  ): EventArgs_Type_Callback<TEvents, TEventType>[1];
+
+  off<TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEventType>
-  ) => RendererTIPC<TEvents>;
+  ): RendererTIPC<TEvents>;
 
-  on: <TEventType extends EventType<TEvents>>(
+  on<TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Event_Callback<
       TEvents,
       TEventType,
       IpcRendererEventer<TEvents>
     >
-  ) => RendererTIPC<TEvents>;
+  ): RendererTIPC<TEvents>;
 
-  once: <TEventType extends EventType<TEvents>>(
+  on<TEventType extends EventType<TEvents>>(
+    eventType: TEventType
+  ): (callback: EventArgs_Type_Callback<TEvents, TEventType>[1]) => void;
+
+  once<TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Event_Callback<
       TEvents,
       TEventType,
       IpcRendererEventer<TEvents>
     >
-  ) => RendererTIPC<TEvents>;
+  ): RendererTIPC<TEvents>;
+
+  once<TEventType extends EventType<TEvents>>(
+    eventType: TEventType
+  ): EventArgs_Type_Callback<TEvents, TEventType>[1];
 
   emit: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Payload<TEvents, TEventType>
@@ -111,11 +109,7 @@ export interface RendererTIPC<TEvents extends Events> {
 
   listeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
-  ) => (
-    | RendererTIPCEventHandlerFunction<TEvents>
-    | RendererTIPCEventHandlerFunctionExtended<TEvents>
-    | Function
-  )[];
+  ) => Function[];
 
   listenerCount: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
@@ -123,11 +117,7 @@ export interface RendererTIPC<TEvents extends Events> {
 
   rawListeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
-  ) => (
-    | RendererTIPCEventHandlerFunction<TEvents>
-    | RendererTIPCEventHandlerFunctionExtended<TEvents>
-    | Function
-  )[];
+  ) => Function[];
 
   eventNames: () => (EventType<TEvents> | string | symbol)[];
 }
@@ -149,28 +139,57 @@ export const setupRendererTIPC = <
 
   invoke: (...args) => ipcRenderer.invoke(...(args as [any])),
 
-  off: (...args) => ipcRenderer.off(args[0], args[1]),
+  off: (...args): any => {
+    if (args[1]) {
+      return ipcRenderer.off(args[0], args[1] as any) as RendererTIPC<TEvents>;
+    } else {
+      return (callback: (...args: any) => void) => {
+        ipcRenderer.off(args[0], (_, data) => callback(data));
+      };
+    }
+  },
 
-  on: (...args) => ipcRenderer.on(args[0], args[1]),
+  on: (...args): any => {
+    if (args[1]) {
+      return ipcRenderer.on(args[0], args[1] as any) as RendererTIPC<TEvents>;
+    } else {
+      return (callback: (...args: any) => void) => {
+        ipcRenderer.on(args[0], (_, data) => callback(data));
+      };
+    }
+  },
 
-  once: (...args) => ipcRenderer.once(args[0], args[1]),
+  once: (...args): any => {
+    if (args[1]) {
+      return ipcRenderer.once(args[0], args[1] as any) as RendererTIPC<TEvents>;
+    } else {
+      return (callback: (...args: any) => void) => {
+        ipcRenderer.once(args[0], (_, data) => callback(data));
+      };
+    }
+  },
 
   emit: (...args) => ipcRenderer.emit(...(args as [any])),
 
-  addListener: (...args) => ipcRenderer.addListener(args[0], args[1]),
+  addListener: (...args) =>
+    ipcRenderer.addListener(args[0], args[1]) as RendererTIPC<TEvents>,
 
-  prependListener: (...args) => ipcRenderer.prependListener(args[0], args[1]),
+  prependListener: (...args) =>
+    ipcRenderer.prependListener(args[0], args[1]) as RendererTIPC<TEvents>,
 
   prependOnceListener: (...args) =>
-    ipcRenderer.prependOnceListener(args[0], args[1]),
+    ipcRenderer.prependOnceListener(args[0], args[1]) as RendererTIPC<TEvents>,
 
-  setMaxListeners: (n: number) => ipcRenderer.setMaxListeners(n),
+  setMaxListeners: (n: number) =>
+    ipcRenderer.setMaxListeners(n) as RendererTIPC<TEvents>,
 
   getMaxListeners: () => ipcRenderer.getMaxListeners(),
 
-  removeListener: (...args) => ipcRenderer.removeListener(args[0], args[1]),
+  removeListener: (...args) =>
+    ipcRenderer.removeListener(args[0], args[1]) as RendererTIPC<TEvents>,
 
-  removeAllListeners: eventType => ipcRenderer.removeAllListeners(eventType),
+  removeAllListeners: eventType =>
+    ipcRenderer.removeAllListeners(eventType) as RendererTIPC<TEvents>,
 
   listeners: eventType => ipcRenderer.listeners(eventType),
 

@@ -1,2 +1,3 @@
-export * from "./exposed/createEventer";
-export * from "./exposed/useCallback";
+import * as electronTIPC from "./external";
+export * from "./external";
+export default electronTIPC;

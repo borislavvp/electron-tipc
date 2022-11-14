@@ -28,7 +28,7 @@ export type EventArgs_Type_Callback<
   ? [eventType: TEventType, callback: () => void]
   : [
       eventType: TEventType,
-      callback: (payload: EventPayload<TEvents, TEventType>) => void
+      listener: (payload: EventPayload<TEvents, TEventType>) => void
     ];
 
 export type EventArgs_Type_Event_Callback<
@@ -39,7 +39,7 @@ export type EventArgs_Type_Event_Callback<
   ? [eventType: EventType<TEvents>, callback: (event: TEvent) => void]
   : [
       eventType: TEventType,
-      callback: (
+      listener: (
         event: TEvent,
         payload: EventPayload<TEvents, TEventType>
       ) => void

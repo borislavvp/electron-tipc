@@ -1,4 +1,9 @@
-import { ipcMain, type IpcMainEvent, type IpcMainInvokeEvent } from "electron";
+import {
+  ipcMain,
+  type IpcMain,
+  type IpcMainEvent,
+  type IpcMainInvokeEvent
+} from "electron";
 
 import type {
   Events,
@@ -6,25 +11,9 @@ import type {
   EventArgs_Type_Callback,
   EventArgs_Type_Event_Callback,
   EventArgs_Type_Payload
-} from "./types/Eventer";
+} from "./types";
 
-export type MainTIPCEventHandlerFunction<TEvents extends Events> = <
-  TEventType extends EventType<TEvents>
->(
-  ...args: EventArgs_Type_Callback<TEvents, TEventType>
-) => MainTIPC<TEvents>;
-
-export type MainTIPCEventHandlerFunctionExtended<TEvents extends Events> = <
-  TEventType extends EventType<TEvents>
->(
-  ...args: EventArgs_Type_Event_Callback<
-    TEvents,
-    TEventType,
-    IpcMainEvent | IpcMainInvokeEvent
-  >
-) => MainTIPC<TEvents>;
-
-export interface MainTIPC<TEvents extends Events> {
+export interface MainTIPC<TEvents extends Events> extends Partial<IpcMain> {
   off: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEventType>
   ) => MainTIPC<TEvents>;
@@ -87,11 +76,7 @@ export interface MainTIPC<TEvents extends Events> {
 
   listeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
-  ) => (
-    | MainTIPCEventHandlerFunction<TEvents>
-    | MainTIPCEventHandlerFunctionExtended<TEvents>
-    | Function
-  )[];
+  ) => Function[];
 
   listenerCount: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
@@ -99,11 +84,7 @@ export interface MainTIPC<TEvents extends Events> {
 
   rawListeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
-  ) => (
-    | MainTIPCEventHandlerFunction<TEvents>
-    | MainTIPCEventHandlerFunctionExtended<TEvents>
-    | Function
-  )[];
+  ) => Function[];
 
   eventNames: () => EventType<TEvents>[] | (string | symbol)[];
 }
