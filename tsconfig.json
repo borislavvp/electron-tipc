@@ -8,13 +8,7 @@
       "esModuleInterop": true,
       "allowJs": false,
       "skipLibCheck": true,
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["src/*"],
-      },
       "declaration": true,
-      "declarationMap": true,
-      "sourceMap": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
       "noImplicitReturns": true,
@@ -22,5 +16,4 @@
       "isolatedModules": true,
       "outDir": "./dist" 
     },
-    "include": ["src"],
-  }
+}
