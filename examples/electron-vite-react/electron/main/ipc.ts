@@ -10,7 +10,7 @@ export type CountEvents = [
   {
     type: "count:value-changed";
     payload: {
-      value: number;
+      changedValue: number;
     };
   }
 ];

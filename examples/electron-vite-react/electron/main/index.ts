@@ -65,5 +65,7 @@ app.on("activate", () => {
 });
 
 countEventer.mainTIPC.on("count:set-value", (e, payload) => {
-  win.webContents.send("count:value-changed", payload);
+  win.webContents.send("count:value-changed", {
+    changedValue: payload.value
+  });
 });

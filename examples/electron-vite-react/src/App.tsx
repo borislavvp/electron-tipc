@@ -3,10 +3,10 @@ import { useState } from "react";
 const App: React.FC = () => {
   const [renderCountValue, setRenderCountValue] = useState(0);
 
-  const setCount = () => window.electronAPI.setCountValue(renderCountValue + 1);
+  const setCount = () => window.electronAPI.setCount(renderCountValue + 1);
 
-  window.electronAPI.onCountValueChanged(({ value }) =>
-    setRenderCountValue(value)
+  window.electronAPI.onCountChanged(({ changedValue }) =>
+    setRenderCountValue(changedValue)
   );
 
   return (
