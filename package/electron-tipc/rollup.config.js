@@ -6,21 +6,22 @@ export default function rollup() {
       input: "./src/index.ts",
       output: [
         {
-          file: "dist/index.js",
+          file: "dist/index.cjs.js",
           format: "cjs",
-          entryFileNames: "[name].js",
+          entryFileNames: "[name].cjs.js",
           chunkFileNames: "[name]-[hash].js"
         },
         {
-          file: "dist/index.mjs",
+          file: "dist/index.esm.js",
           format: "esm",
-          entryFileNames: "[name].mjs",
-          chunkFileNames: "[name]-[hash].mjs"
+          entryFileNames: "[name].esm.js",
+          chunkFileNames: "[name]-[hash].esm.js"
         }
       ],
       plugins: [
         typescript({
-          tsconfig: "tsconfig.build.json"
+          tsconfig: "tsconfig.build.json",
+          sourceMap: false
         })
       ],
       external: ["electron", "typescript"]
