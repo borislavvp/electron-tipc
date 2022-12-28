@@ -1,9 +1,9 @@
-import * as E from "electron";
+import { BrowserView, type BrowserViewConstructorOptions } from "electron";
 import { Events } from "./internals/types";
 import { TIPCBrowserView } from "./types";
 
 export function createBrowserView<TEvents extends Events>(
-  options: E.BrowserViewConstructorOptions
+  options: BrowserViewConstructorOptions
 ) {
-  return new E.BrowserView(options) as TIPCBrowserView<TEvents>;
+  return new BrowserView(options) as TIPCBrowserView<TEvents>;
 }
