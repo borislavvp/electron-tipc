@@ -2,7 +2,9 @@
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm --filter=electron-tipc build"
+    "build": "pnpm --filter=electron-tipc build",
+    "changeset:version": "changeset version && pnpm install",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
