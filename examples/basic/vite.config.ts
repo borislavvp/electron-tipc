@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import electron from "vite-electron-plugin";
 import { customStart, loadViteEnv } from "vite-electron-plugin/plugin";
-import renderer from "vite-plugin-electron-renderer";
 import pkg from "./package.json";
 
 rmSync(path.join(__dirname, "dist-electron"), { recursive: true, force: true });
@@ -19,7 +18,7 @@ export default defineConfig({
   plugins: [
     react(),
     electron({
-      include: ["electron", "preload"],
+      include: ["src/electron", "preload"],
       transformOptions: {
         sourcemap: !!process.env.VSCODE_DEBUG
       },
@@ -39,10 +38,6 @@ export default defineConfig({
         // Allow use `import.meta.env.VITE_SOME_KEY` in Electron-Main
         loadViteEnv()
       ]
-    }),
-    // Use Node.js API in the Renderer-process
-    renderer({
-      nodeIntegration: true
     })
   ],
   server: process.env.VSCODE_DEBUG

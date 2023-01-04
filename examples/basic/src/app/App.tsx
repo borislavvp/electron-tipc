@@ -1,14 +1,14 @@
+import React from "react";
 import { useState } from "react";
 
 const App: React.FC = () => {
   const [renderCountValue, setRenderCountValue] = useState(0);
 
-  const setCount = () => window.electronAPI.setCount(renderCountValue + 1);
+  const setCount = () => window.electron.api.setCount(renderCountValue + 1);
 
-  window.electronAPI.onCountChanged(({ changedValue }) =>
+  window.electron.api.onCountChanged(({ changedValue }) =>
     setRenderCountValue(changedValue)
   );
-
   return (
     <div>
       <div className="flex flex-col items-center rounded p-4 m-6">
