@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "description": "Electron TIPC Basix Example",
   "author": "Borislav Pavlov",
+  "email":"basic-example@com",
   "main": "dist-electron/src/electron/main/index.js",
   "scripts": {
     "dev": "vite",
