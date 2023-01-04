@@ -2,10 +2,9 @@
   "name": "electron-vite-react",
   "productName": "Electron",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Electron TIPC Basix Example",
-  "author": "Borislav Pavlov",
-  "email":"basic-example@com",
+  "author": "John Doe <john@doe.com>",
   "main": "dist-electron/src/electron/main/index.js",
   "scripts": {
     "dev": "vite",
