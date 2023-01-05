@@ -1,6 +1,6 @@
 {
   "name": "electron-tipc",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Typesafe extension for Electron's IPC API.",
   "author": "Borislav Pavlov <borislavgpavlov@gmail.com>",
   "license": "MIT",
