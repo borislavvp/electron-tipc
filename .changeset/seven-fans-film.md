@@ -2,4 +2,4 @@
 "electron-tipc": patch
 ---
 
-Initial Version
+Initial version
