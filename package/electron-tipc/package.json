@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rm -rf ./dist && rollup --config rollup.config.js",
     "dev": "pnpm build --watch",
-    "lint-staged": "lint-staged"
+    "changeset": "changeset",
+    "release": "changeset publish"
   },
   "exports": {
     ".": {

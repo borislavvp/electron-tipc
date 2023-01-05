@@ -3,6 +3,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "pnpm --filter=electron-tipc build",
+    "changeset": "changeset",
     "changeset:version": "changeset version && pnpm install",
     "release": "changeset publish"
   },
