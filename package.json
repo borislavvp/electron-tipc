@@ -3,8 +3,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "pnpm --filter=electron-tipc build",
+    "prepublish": "pnpm build",
     "changeset": "changeset",
-    "changeset:version": "changeset version && pnpm install",
+    "version": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "changeset publish"
   },
   "devDependencies": {

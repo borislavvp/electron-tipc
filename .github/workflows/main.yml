@@ -40,11 +40,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: 'pnpm'
-      - run: pnpm install 
       - uses: changesets/action@v1
         with:
           publish: pnpm release
-          version: pnpm changeset:version
+          version: pnpm version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
