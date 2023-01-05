@@ -37,6 +37,6 @@
     }
   },
   "dependencies": {
-    "electron-tipc": "workspace:^0.0.1"
+    "electron-tipc": "workspace:^0.0.0"
   }
 }
