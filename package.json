@@ -5,7 +5,7 @@
     "build": "pnpm --filter=electron-tipc build",
     "prepublish": "pnpm build",
     "changeset": "changeset",
-    "version": "changeset version && pnpm install --no-frozen-lockfile",
+    "changeset:version": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "changeset publish"
   },
   "devDependencies": {
