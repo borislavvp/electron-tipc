@@ -2,7 +2,7 @@
   "name": "electron-tipc-basic-example",
   "productName": "Electron",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Electron TIPC Basix Example",
   "author": "John Doe <john@doe.com>",
   "homepage": "https://electron-tipc.com/example-basic",
@@ -37,6 +37,6 @@
     }
   },
   "dependencies": {
-    "electron-tipc": "workspace:^0.0.0"
+    "electron-tipc": "workspace:^0.0.1"
   }
 }
