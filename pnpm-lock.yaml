@@ -40,7 +40,7 @@ importers:
       autoprefixer: ^10.4.13
       electron: ^21.1.0
       electron-builder: ^23.3.3
-      electron-tipc: workspace:^0.0.1
+      electron-tipc: workspace:^0.0.2
       esbuild: ^0.15.15
       postcss: ^8.4.20
       react: ^18.2.0

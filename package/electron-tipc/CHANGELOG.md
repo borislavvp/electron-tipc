@@ -1,5 +1,11 @@
 # electron-tipc
 
+## 0.0.2
+
+### Patch Changes
+
+- 73d5a61: Fixed configuration
+
 ## 0.0.1
 
 ### Patch Changes
