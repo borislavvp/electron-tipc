@@ -14,4 +14,48 @@
 
 <br />
 
-TBD
+# Usage (TBD) 
+
+### Brief explanation of the initial concept
+
+IPC events are organized and defined in a type of the form an array type that includes FSA compliant object definitions with optional payload:
+```ts
+ type SomeEvents = [
+  {
+    type: "event-type",
+    payload?: SomePayload
+  },
+  {...},
+  {...},
+  ...
+ ]
+```
+
+Then an eventer is created using the defined type using the library:
+
+```ts
+import { createEventer } from "electron-tipc";
+
+type SomeEvents = [...];
+
+const someEventer = createEventer<SomeEvents>();
+```
+
+The eventer contains both of electron's ```ipcMain``` and ```ipcRenderer``` - ```someEventer.main``` and ```someEventer.renderer``` respectively which have the same signature for each function exposed in the original ```ipcMain``` and ```ipcRenderer```. 
+The difference is that each function is strictly typed allowing communication only to channels that are defined in the type for which the eventer is created, where the channel corresponds to the ```type``` property, and the data received from any callback function corresponds to the ```payload``` property.
+
+### Example for the defined `SomeEvents` :
+
+Using the ```ipcRenderer.send``` :
+```ts
+const data: SomePayload = {..}
+someEventer.renderer.send("event-type", data);
+```
+
+Using the ```ipcMain.on``` :
+```ts
+someEventer.main.on("event-type", (_,data: SomePayload) => {...});
+```
+
+Then whenever there is a need in the codebase to use any IPC communication involving the defined ``` SomeEvents ```, the ```someEventer``` is used.
+
