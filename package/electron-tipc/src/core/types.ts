@@ -1,6 +1,6 @@
 import * as E from "electron";
-import { MainTIPC } from "./internals/setupMainTIPC";
-import { RendererTIPC } from "./internals/setupRendererTIPC";
+import { Main } from "./internals/setupMain";
+import { Renderer } from "./internals/setupRenderer";
 import {
   EventArgs_Type_Payload,
   EventPayload,
@@ -8,18 +8,18 @@ import {
   EventType
 } from "./internals/types";
 
-export interface TIPCWebFrame<TEvents extends Events> extends E.WebFrameMain {
-  frames: TIPCWebFrame<TEvents>[];
+export interface WebFrameMain<TEvents extends Events> extends E.WebFrameMain {
+  frames: WebFrameMain<TEvents>[];
 
-  framesInSubtree: TIPCWebFrame<TEvents>[];
+  framesInSubtree: WebFrameMain<TEvents>[];
 
-  parent: TIPCWebFrame<TEvents> | null;
+  parent: WebFrameMain<TEvents> | null;
 
-  top: TIPCWebFrame<TEvents> | null;
+  top: WebFrameMain<TEvents> | null;
 
-  ipc: MainTIPC<TEvents>;
+  ipc: Main<TEvents>;
 
-  send: RendererTIPC<TEvents>["send"];
+  send: Renderer<TEvents>["send"];
 
   postMessage<TEventType extends EventType<TEvents>>(
     eventType: TEventType,
@@ -30,28 +30,28 @@ export interface TIPCWebFrame<TEvents extends Events> extends E.WebFrameMain {
   ): void;
 }
 
-export interface TIPCWebContents<TEvents extends Events> extends E.WebContents {
-  fromDevToolsTargetId(targetId: string): TIPCWebContents<TEvents>;
+export interface WebContents<TEvents extends Events> extends E.WebContents {
+  fromDevToolsTargetId(targetId: string): WebContents<TEvents>;
 
-  fromFrame(frame: TIPCWebFrame<TEvents>): TIPCWebContents<TEvents>;
+  fromFrame(frame: WebFrameMain<TEvents>): WebContents<TEvents>;
 
-  fromId(id: number): TIPCWebContents<TEvents>;
+  fromId(id: number): WebContents<TEvents>;
 
-  getAllWebContents(): TIPCWebContents<TEvents>[];
+  getAllWebContents(): WebContents<TEvents>[];
 
-  getFocusedWebContents(): TIPCWebContents<TEvents>;
+  getFocusedWebContents(): WebContents<TEvents>;
 
-  hosTIPCWebContents: TIPCWebContents<TEvents>;
+  hosWebContents: WebContents<TEvents>;
 
-  mainFrame: TIPCWebFrame<TEvents>;
+  mainFrame: WebFrameMain<TEvents>;
 
-  opener: TIPCWebFrame<TEvents>;
+  opener: WebFrameMain<TEvents>;
 
-  devToolsWebContents: TIPCWebContents<TEvents> | null;
+  devToolsWebContents: WebContents<TEvents> | null;
 
-  ipc: MainTIPC<TEvents>;
+  ipc: Main<TEvents>;
 
-  send: RendererTIPC<TEvents>["send"];
+  send: Renderer<TEvents>["send"];
 
   sendToFrame<TEventType extends EventType<TEvents>>(
     frameId: number | [number, number],
@@ -67,23 +67,22 @@ export interface TIPCWebContents<TEvents extends Events> extends E.WebContents {
   ): void;
 }
 
-export interface TIPCBrowserView<TEvents extends Events> extends E.BrowserView {
-  webContents: TIPCWebContents<TEvents>;
+export interface BrowserView<TEvents extends Events> extends E.BrowserView {
+  webContents: WebContents<TEvents>;
 }
 
-export interface TIPCBrowserWindow<TEvents extends Events>
-  extends E.BrowserWindow {
+export interface BrowserWindow<TEvents extends Events> extends E.BrowserWindow {
   fromBrowserView<TViewEvents extends Events>(
-    browserView: TIPCBrowserView<TViewEvents>
-  ): TIPCBrowserWindow<TViewEvents> | null;
+    browserView: BrowserView<TViewEvents>
+  ): BrowserWindow<TViewEvents> | null;
 
   fromBrowserView(browserView: E.BrowserView): E.BrowserWindow | null;
 
   fromWebContents<TWebContentsEvents extends Events>(
-    webContents: TIPCWebContents<TWebContentsEvents>
-  ): TIPCBrowserWindow<TWebContentsEvents> | null;
+    webContents: WebContents<TWebContentsEvents>
+  ): BrowserWindow<TWebContentsEvents> | null;
 
   fromWebContents(webContents: E.WebContents): E.BrowserWindow | null;
 
-  webContents: TIPCWebContents<TEvents>;
+  webContents: WebContents<TEvents>;
 }

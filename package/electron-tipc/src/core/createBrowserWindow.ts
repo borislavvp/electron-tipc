@@ -1,9 +1,9 @@
-import { BrowserWindow, type BrowserWindowConstructorOptions } from "electron";
+import * as E from "electron";
 import { Events } from "./internals/types";
-import { TIPCBrowserWindow } from "./types";
+import { BrowserWindow } from "./types";
 
 export function createBrowserWindow<TEvents extends Events>(
-  options: BrowserWindowConstructorOptions
+  options: E.BrowserWindowConstructorOptions
 ) {
-  return new BrowserWindow(options) as TIPCBrowserWindow<TEvents>;
+  return new E.BrowserWindow(options) as BrowserWindow<TEvents>;
 }

@@ -13,18 +13,18 @@ import type {
   EventArgs_Type_Payload
 } from "./types";
 
-export interface MainTIPC<TEvents extends Events> extends Partial<IpcMain> {
+export interface Main<TEvents extends Events> extends Partial<IpcMain> {
   off: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEventType>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   on: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Event_Callback<TEvents, TEventType, IpcMainEvent>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   once: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Event_Callback<TEvents, TEventType, IpcMainEvent>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   handle: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Event_Callback<
@@ -52,27 +52,27 @@ export interface MainTIPC<TEvents extends Events> extends Partial<IpcMain> {
 
   addListener: <TEvent extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEvent>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   prependListener: <TEvent extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEvent>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   prependOnceListener: <TEvent extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEvent>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
-  setMaxListeners: (n: number) => MainTIPC<TEvents>;
+  setMaxListeners: (n: number) => Main<TEvents>;
 
   getMaxListeners: () => number;
 
   removeListener: <TEventType extends EventType<TEvents>>(
     ...args: EventArgs_Type_Callback<TEvents, TEventType>
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   removeAllListeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
-  ) => MainTIPC<TEvents>;
+  ) => Main<TEvents>;
 
   listeners: <TEventType extends EventType<TEvents>>(
     eventType: TEventType
@@ -89,7 +89,7 @@ export interface MainTIPC<TEvents extends Events> extends Partial<IpcMain> {
   eventNames: () => EventType<TEvents>[] | (string | symbol)[];
 }
 
-export const setupMainTIPC = <TEvents extends Events>(): MainTIPC<TEvents> => ({
+export const setupMain = <TEvents extends Events>(): Main<TEvents> => ({
   off: (...args) => ipcMain.off(args[0], args[1]),
 
   on: (...args) => ipcMain.on(args[0], args[1]),
