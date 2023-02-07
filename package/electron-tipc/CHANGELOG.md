@@ -1,5 +1,11 @@
 # electron-tipc
 
+## 0.0.3
+
+### Patch Changes
+
+- 08a3314: Changed API definitions
+
 ## 0.0.2
 
 ### Patch Changes
