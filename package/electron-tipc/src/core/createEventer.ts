@@ -1,14 +1,14 @@
 import { Events } from "./internals/types";
-import { setupMainTIPC } from "./internals/setupMainTIPC";
-import { RendererTIPC, setupRendererTIPC } from "./internals/setupRendererTIPC";
+import { setupMain } from "./internals/setupMain";
+import { Renderer, setupRenderer } from "./internals/setupRenderer";
 
 export function createEventer<TEvents extends Events = never>() {
   return {
-    rendererTIPC: setupRendererTIPC<TEvents>() as RendererTIPC<TEvents>,
-    mainTIPC: setupMainTIPC<TEvents>()
+    renderer: setupRenderer<TEvents>() as Renderer<TEvents>,
+    main: setupMain<TEvents>()
   };
 }
 
-export type ElectronTIPCEventer<TEvents extends Events> = ReturnType<
+export type ElectronEventer<TEvents extends Events> = ReturnType<
   typeof createEventer<TEvents>
 >;

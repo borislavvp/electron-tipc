@@ -2,7 +2,8 @@
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm --filter=electron-tipc build",
+    "build:package": "pnpm --filter=electron-tipc build",
+    "build:examples": "pnpm --filter \"./examples/*\" build",
     "changeset": "changeset",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "changeset publish"

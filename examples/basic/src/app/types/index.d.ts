@@ -5,7 +5,5 @@ type ElectronBridge =
   typeof import("../../electron/preload/index").electronBridge;
 
 declare global {
-  interface Window {
-    electron: ElectronBridge;
-  }
+  interface Window extends ElectronBridge {}
 }
