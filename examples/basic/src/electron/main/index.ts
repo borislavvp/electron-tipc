@@ -1,11 +1,11 @@
-import { app, BrowserWindow } from "electron";
-import { createBrowserWindow, TIPCBrowserWindow } from "electron-tipc";
+import * as E from "electron";
+import { createBrowserWindow, type BrowserWindow } from "electron-tipc";
 import { join } from "path";
 import { countEventer, CountEvents } from "./ipc";
 
 process.env.DIST_ELECTRON = join(__dirname, "../..");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
-process.env.PUBLIC = app.isPackaged
+process.env.PUBLIC = E.app.isPackaged
   ? process.env.DIST
   : join(process.env.DIST_ELECTRON, "../public");
 
@@ -13,7 +13,7 @@ const preload = join(__dirname, "../preload/index.js");
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, "index.html");
 
-let win: TIPCBrowserWindow<CountEvents> | null = null;
+let win: BrowserWindow<CountEvents> | null = null;
 
 async function createWindow() {
   win = createBrowserWindow<CountEvents>({
@@ -28,26 +28,26 @@ async function createWindow() {
   if (process.env.VITE_DEV_SERVER_URL) {
     // electron-vite-vue#298
     win.loadURL(url);
-    // Open devTool if the app is not packaged
+    // Open devTool if the E.app is not packaged
     win.webContents.openDevTools();
   } else {
     win.loadFile(indexHtml);
   }
 }
 
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
+if (!E.app.requestSingleInstanceLock()) {
+  E.app.quit();
   process.exit(0);
 }
 
-app.whenReady().then(createWindow);
+E.app.whenReady().then(createWindow);
 
-app.on("window-all-closed", () => {
+E.app.on("window-all-closed", () => {
   win = null;
-  if (process.platform !== "darwin") app.quit();
+  if (process.platform !== "darwin") E.app.quit();
 });
 
-app.on("second-instance", () => {
+E.app.on("second-instance", () => {
   if (win) {
     // Focus on the main window if the user tried to open another
     if (win.isMinimized()) win.restore();
@@ -55,8 +55,8 @@ app.on("second-instance", () => {
   }
 });
 
-app.on("activate", () => {
-  const allWindows = BrowserWindow.getAllWindows();
+E.app.on("activate", () => {
+  const allWindows = E.BrowserWindow.getAllWindows();
   if (allWindows.length) {
     allWindows[0].focus();
   } else {
@@ -64,7 +64,7 @@ app.on("activate", () => {
   }
 });
 
-countEventer.mainTIPC.on("count:set-value", (_, payload) => {
+countEventer.main.on("count:set-value", (_, payload) => {
   win?.webContents.send("count:value-changed", {
     changedValue: payload.value
   });
