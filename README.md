@@ -42,7 +42,7 @@ const someEventer = createEventer<SomeEvents>();
 ```
 
 The eventer contains both of electron's ```ipcMain``` and ```ipcRenderer``` - ```someEventer.main``` and ```someEventer.renderer``` respectively which have the same signature for each function exposed in the original ```ipcMain``` and ```ipcRenderer```. 
-The difference is that each function is strictly typed allowing communication only to channels that are defined in the type for which the eventer is created, where the channel corresponds to the ```type``` property, and the data received from any callback function corresponds to the ```payload``` property.
+The difference is that each function is strictly typed allowing communication only to channels that are defined in the type for which the eventer is created, where the channel corresponds to the ```type``` property, and the data received from any callback function corresponds to the ```payload``` property, everything infered.
 
 ### Example for the defined `SomeEvents` :
 
